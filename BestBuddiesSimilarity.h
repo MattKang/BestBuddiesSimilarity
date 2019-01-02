@@ -16,8 +16,8 @@ public:
 
     MatrixT compute();
     MatrixT compute(MatrixT image, MatrixT templateImage);
-    MatrixT getImage();
-    MatrixT getTemplate();
+    MatrixT getImage() const;
+    MatrixT getTemplate() const;
     void setImage(MatrixT imageIn);
     void setTemplate(MatrixT templateImageIn);
 
