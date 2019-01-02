@@ -15,7 +15,19 @@ class BBS
     static constexpr float gammaDefault = 2; // from literature
 
 public:
-    BBS() : pz(3), gamma(2);
+    BBS() : pz(pzDefault), gamma(gammaDefault)
+    {}
+
+    BBS(const MatrixT &imageIn,
+        const MatrixT &templateImageIn,
+        const int pzIn = pzDefault,
+        const float gammaIn = gammaDefault)
+    {
+        image = imageIn;
+        templateImage = templateImageIn;
+        pz = pzIn;
+        gamma = gammaIn;
+    }
 
     MatrixT compute();
     MatrixT compute(MatrixT image, MatrixT templateImage);
