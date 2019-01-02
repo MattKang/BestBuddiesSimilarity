@@ -11,6 +11,9 @@ class BBS
 {
     using MatrixT = cv::Mat;
 
+    static constexpr int pzDefault = 3; // from literature
+    static constexpr float gammaDefault = 2; // from literature
+
 public:
     BBS() : pz(3), gamma(2);
 
@@ -30,8 +33,7 @@ private:
 
     MatrixT image, templateImage;
     int pz;
-    double gamma;
-
+    float gamma;
 };
 
 #endif //BESTBUDDIESSIMILARITY_H
