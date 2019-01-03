@@ -79,7 +79,8 @@ int main(int argc, char **argv)
         cv::waitKey(0);
 
         auto bbs = BBS(image, templateImage);
-        std::cout << bbs.compute() << std::endl;
+        cv::imshow("", bbs.compute());
+        cv::waitKey(0);
     }
 
     return 0;

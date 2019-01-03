@@ -13,10 +13,10 @@ BBS::MatrixT BBS::compute()
     return bbs;
 }
 
-BBS::MatrixT BBS::compute(MatrixT imageIn, MatrixT templateImageIn)
+BBS::MatrixT BBS::compute(MatrixT image, MatrixT templateImage)
 {
-    image = imageIn;
-    templateImage = templateImageIn;
+    setImage(image);
+    setTemplate(templateImage);
     return compute();
 }
 
@@ -32,10 +32,18 @@ BBS::MatrixT BBS::getTemplate() const
 
 void BBS::setImage(BBS::MatrixT imageIn)
 {
-    image = imageIn;
+    image = adjustImageSize(imageIn);
 }
 
-void BBS::setTemplate(BBS::MatrixT templateImageIn)
+void BBS::setTemplate(BBS::MatrixT imageIn)
 {
-    templateImage = templateImageIn;
+    templateImage = adjustImageSize(imageIn);
+}
+
+BBS::MatrixT BBS::adjustImageSize(const BBS::MatrixT &image) const
+{
+    const auto size = image.size();
+    if (size.width % pz || size.height % pz)
+        return crop(image, 0, 0, size.width - size.width % pz, size.height - size.height % pz);
+    return image;
 }

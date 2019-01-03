@@ -34,9 +34,15 @@ public:
     MatrixT getImage() const;
     MatrixT getTemplate() const;
     void setImage(MatrixT imageIn);
-    void setTemplate(MatrixT templateImageIn);
+    void setTemplate(MatrixT imageIn);
 
 private:
+    MatrixT adjustImageSize(const MatrixT &image) const;
+    static MatrixT crop(const MatrixT &image, const int x, const int y, const int width, const int height)
+    {
+        return image(cv::Rect(x, y, width, height));
+
+    }
     template<typename... Ts>
     static MatrixT zeros(Ts &&... args)
     {
