@@ -23,8 +23,8 @@ public:
         const int pzIn = pzDefault,
         const float gammaIn = gammaDefault)
     {
-        image = imageIn;
-        templateImage = templateImageIn;
+        setImage(imageIn);
+        setTemplate(templateImageIn);
         pz = pzIn;
         gamma = gammaIn;
     }
