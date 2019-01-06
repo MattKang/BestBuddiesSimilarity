@@ -9,7 +9,8 @@
 
 class BBS
 {
-    using MatrixBase = cv::Mat_<unsigned char>;
+    using ScalarType = cv::Vec3b; // 3-channel (RGB) unsigned char
+    using MatrixBase = cv::Mat_<ScalarType>;
 
     class Matrix : public MatrixBase
     {
