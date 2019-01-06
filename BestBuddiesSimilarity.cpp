@@ -4,46 +4,45 @@
 
 #include "BestBuddiesSimilarity.h"
 
-BBS::MatrixT BBS::compute()
+BBS::Matrix BBS::compute()
 {
     const auto imageSize = image.size();
     const auto templateSize = templateImage.size();
-    MatrixT bbs = zeros(imageSize);
+    Matrix bbs = Matrix::zeros(image.rows, image.cols);
 
     return bbs;
 }
 
-BBS::MatrixT BBS::compute(MatrixT image, MatrixT templateImage)
+BBS::Matrix BBS::compute(const Matrix &image, const Matrix &templateImage)
 {
     setImage(image);
     setTemplate(templateImage);
     return compute();
 }
 
-BBS::MatrixT BBS::getImage() const
+BBS::Matrix BBS::getImage() const
 {
     return image;
 }
 
-BBS::MatrixT BBS::getTemplate() const
+BBS::Matrix BBS::getTemplate() const
 {
     return templateImage;
 }
 
-void BBS::setImage(BBS::MatrixT imageIn)
+void BBS::setImage(BBS::Matrix imageIn)
 {
     image = adjustImageSize(imageIn);
 }
 
-void BBS::setTemplate(BBS::MatrixT imageIn)
+void BBS::setTemplate(BBS::Matrix imageIn)
 {
     templateImage = adjustImageSize(imageIn);
 }
 
-BBS::MatrixT BBS::adjustImageSize(const BBS::MatrixT &image) const
+BBS::Matrix BBS::adjustImageSize(const BBS::Matrix &image) const
 {
-    const auto size = image.size();
-    if (size.width % pz || size.height % pz)
-        return crop(image, 0, 0, size.width - size.width % pz, size.height - size.height % pz);
+    if (image.rows % pz || image.cols % pz)
+        return Matrix::crop(image, 0, 0, image.cols - image.cols % pz, image.rows - image.rows % pz);
     return image;
 }

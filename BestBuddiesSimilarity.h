@@ -9,46 +9,47 @@
 
 class BBS
 {
-    using MatrixT = cv::Mat;
+    using MatrixBase = cv::Mat_<unsigned char>;
+
+    class Matrix : public MatrixBase
+    {
+        using MatrixBase::MatrixBase;
+    public:
+        Matrix() = default;
+        Matrix(const cv::MatExpr &matrix) : MatrixBase(matrix) {};
+
+        static Matrix crop(const Matrix &image, const int x, const int y, const int width, const int height)
+        {
+            return image(cv::Rect(x, y, width, height));
+        }
+        static Matrix zeros(const int rows, const int cols) { return MatrixBase::zeros(rows, cols); }
+    };
 
     static constexpr int pzDefault = 3; // from literature
     static constexpr float gammaDefault = 2; // from literature
 
 public:
-    BBS() : pz(pzDefault), gamma(gammaDefault) {}
-
-    BBS(const MatrixT &imageIn,
-        const MatrixT &templateImageIn,
+    BBS() : pz(pzDefault), gamma(gammaDefault) {};
+    BBS(const Matrix &imageIn,
+        const Matrix &templateImageIn,
         const int pzIn = pzDefault,
         const float gammaIn = gammaDefault) : pz(pzIn), gamma(gammaIn)
     {
         setImage(imageIn);
         setTemplate(templateImageIn);
-        pz = pzIn;
-        gamma = gammaIn;
     }
 
-    MatrixT compute();
-    MatrixT compute(MatrixT image, MatrixT templateImage);
-    MatrixT getImage() const;
-    MatrixT getTemplate() const;
-    void setImage(MatrixT imageIn);
-    void setTemplate(MatrixT imageIn);
+    Matrix compute();
+    Matrix compute(const Matrix &image, const Matrix &templateImage);
+    Matrix getImage() const;
+    Matrix getTemplate() const;
+    void setImage(Matrix imageIn);
+    void setTemplate(Matrix imageIn);
 
 private:
-    MatrixT adjustImageSize(const MatrixT &image) const;
-    static MatrixT crop(const MatrixT &image, const int x, const int y, const int width, const int height)
-    {
-        return image(cv::Rect(x, y, width, height));
+    Matrix adjustImageSize(const Matrix &image) const;
 
-    }
-    template<typename... Ts>
-    static MatrixT zeros(Ts &&... args)
-    {
-        return cv::Mat::zeros(std::forward<Ts>(args)..., CV_8U);
-    }
-
-    MatrixT image, templateImage;
+    Matrix image, templateImage;
     int pz;
     float gamma;
 };
