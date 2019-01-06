@@ -43,7 +43,7 @@ void BBS::setTemplate(BBS::Matrix imageIn)
 BBS::Matrix BBS::adjustImageSize(const BBS::Matrix &image) const
 {
     if (image.rows % pz || image.cols % pz)
-        return Matrix::crop(image, 0, 0, image.cols - image.cols % pz, image.rows - image.rows % pz);
+        return Matrix::block(image, 0, 0, image.cols - image.cols % pz, image.rows - image.rows % pz);
     return image;
 }
 

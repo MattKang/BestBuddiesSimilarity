@@ -18,7 +18,7 @@ class BBS
         Matrix() = default;
         Matrix(const cv::MatExpr &matrix) : MatrixBase(matrix) {};
 
-        static Matrix crop(const Matrix &image, const int x, const int y, const int width, const int height)
+        static Matrix block(const Matrix &image, const int x, const int y, const int width, const int height)
         {
             return image(cv::Rect(x, y, width, height));
         }
