@@ -48,6 +48,7 @@ public:
 
 private:
     Matrix adjustImageSize(const Matrix &image) const;
+    static Matrix im2col(Matrix &src, int rowBlock, int colBlock, int rowStride, int colStride);
 
     Matrix image, templateImage;
     int pz;
