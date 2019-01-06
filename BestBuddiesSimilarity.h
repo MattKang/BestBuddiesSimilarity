@@ -25,9 +25,6 @@ class BBS
         static Matrix zeros(const int rows, const int cols) { return MatrixBase::zeros(rows, cols); }
     };
 
-    static constexpr int pzDefault = 3; // from literature
-    static constexpr float gammaDefault = 2; // from literature
-
 public:
     BBS() : pz(pzDefault), gamma(gammaDefault) {};
     BBS(const Matrix &imageIn,
@@ -50,9 +47,11 @@ private:
     Matrix adjustImageSize(const Matrix &image) const;
     static Matrix im2col(Matrix &src, int rowBlock, int colBlock, int rowStride, int colStride);
 
-    Matrix image, templateImage;
+    static constexpr int pzDefault = 3; // from literature
+    static constexpr float gammaDefault = 2; // from literature
     int pz;
     float gamma;
+    Matrix image, templateImage;
 };
 
 #endif //BESTBUDDIESSIMILARITY_H
