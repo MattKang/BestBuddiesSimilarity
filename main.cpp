@@ -24,6 +24,7 @@ int parseArgs(int &argc,
     }
     catch (const CLI::Error &e)
     {
+        app.exit(e);
         return -1;
     }
     return 0;
