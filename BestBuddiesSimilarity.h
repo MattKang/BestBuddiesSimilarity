@@ -40,8 +40,8 @@ public:
     Matrix compute(const Matrix &image, const Matrix &templateImage);
     Matrix getImage() const;
     Matrix getTemplate() const;
-    void setImage(Matrix imageIn);
-    void setTemplate(Matrix imageIn);
+    void setImage(const Matrix &imageIn);
+    void setTemplate(const Matrix &imageIn);
 
 private:
     Matrix adjustImageSize(const Matrix &image) const;

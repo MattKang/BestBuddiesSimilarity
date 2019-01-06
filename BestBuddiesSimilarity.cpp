@@ -30,12 +30,12 @@ BBS::Matrix BBS::getTemplate() const
     return templateImage;
 }
 
-void BBS::setImage(BBS::Matrix imageIn)
+void BBS::setImage(const BBS::Matrix &imageIn)
 {
     image = adjustImageSize(imageIn);
 }
 
-void BBS::setTemplate(BBS::Matrix imageIn)
+void BBS::setTemplate(const BBS::Matrix &imageIn)
 {
     templateImage = adjustImageSize(imageIn);
 }
