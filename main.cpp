@@ -67,10 +67,10 @@ int main(int argc, char **argv)
         if (!boxPaths.empty())
         {
             const auto boundingBox = readDelimitedValues(boxPaths.at(i));
-            const auto xMin = boundingBox.front().at(0);
-            const auto yMin = boundingBox.front().at(1);
-            const auto width = boundingBox.front().at(2);
-            const auto height = boundingBox.front().at(3);
+            const auto xMin = static_cast<int>(boundingBox.front().at(0));
+            const auto yMin = static_cast<int>(boundingBox.front().at(1));
+            const auto width = static_cast<int>(boundingBox.front().at(2));
+            const auto height = static_cast<int>(boundingBox.front().at(3));
             templateImage = templateImage(cv::Rect(xMin, yMin, width, height));
         }
 
