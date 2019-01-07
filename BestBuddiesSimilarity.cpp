@@ -8,7 +8,12 @@ BBS::Image BBS::compute()
 {
     const auto imageSize = image.size();
     const auto templateSize = templateImage.size();
-    Matrix bbs = Matrix::zeros(image.rows, image.cols);
+    Image bbs = Image::zeros(image.rows(), image.cols());
+    std::vector<Matrix> imageRGB(static_cast<unsigned long>(image.channels()));
+    cv::split(image, imageRGB);
+    auto templateMat = im2col(templateImage, pz, pz, pz, pz);
+    auto imageMat = im2col(image, pz, pz, pz, pz);
+    auto N = templateMat.cols();
 
     return bbs;
 }
@@ -42,18 +47,18 @@ void BBS::setTemplate(const Image &imageIn)
 
 BBS::Image BBS::adjustImageSize(const Image &image) const
 {
-    if (image.rows % pz || image.cols % pz)
-        return Image::block(image, 0, 0, image.cols - image.cols % pz, image.rows - image.rows % pz);
+    if (image.rows() % pz || image.cols() % pz)
+        return image.block(0, 0, image.cols() - image.cols() % pz, image.rows() - image.rows() % pz);
     return image;
 }
 
 BBS::Image BBS::im2col(Image &src, int rowBlock, int colBlock, int rowStride, int colStride)
 {
     // SOURCE: https://sites.google.com/site/myvrdo/blog/eigenvsopencvim2col
-    const auto m = src.rows;
-    const auto n = src.cols;
-    const auto rowB = static_cast<int>(floor((m - rowBlock) / rowStride) + 1);
-    const auto colB = static_cast<int>(floor((n - colBlock) / colStride) + 1);
+    int m = src.rows();
+    int n = src.cols();
+    auto rowB = static_cast<int>(floor((m - rowBlock) / rowStride) + 1);
+    auto colB = static_cast<int>(floor((n - colBlock) / colStride) + 1);
     int dstrows = ((m - rowBlock) % rowStride != 0 ? rowB + 1 : rowB);
     int dstcols = ((n - colBlock) % colStride != 0 ? colB + 1 : colB);
 

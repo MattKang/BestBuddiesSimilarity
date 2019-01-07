@@ -9,23 +9,29 @@
 
 class BBS
 {
+    // Define Matrix base class (recommended: OpenCV)
     template<typename ScalarT>
-    class MatrixWrap : public cv::Mat_<ScalarT>
+    using MatrixBase = cv::Mat_<ScalarT>;
+
+    template<typename ScalarT>
+    class MatrixWrap : public MatrixBase<ScalarT>
     {
-        using MatrixBase = cv::Mat_<ScalarT>;
-        using MatrixBase::MatrixBase;
+        using MatrixBase = MatrixBase<ScalarT>; // for convenience
+        using MatrixBase::MatrixBase; // inherit all base constructors
     public:
         MatrixWrap() = default;
-        MatrixWrap(const cv::MatExpr &matrix) : MatrixBase(matrix) {};
+        MatrixWrap(const cv::MatExpr &matrix) : MatrixBase(matrix) {}; // handles OpenCV's lazy evaluation
 
-        static MatrixWrap block(const MatrixWrap &image, const int x, const int y, const int width, const int height)
+        MatrixWrap block(const int x, const int y, const int width, const int height) const
         {
-            return image(cv::Rect(x, y, width, height));
+            return MatrixBase(*this, cv::Rect(x, y, width, height));
         }
+        int cols() const { return MatrixBase::cols; };
+        int rows() const { return MatrixBase::rows; };
         static MatrixWrap zeros(const int rows, const int cols) { return MatrixBase::zeros(rows, cols); }
     };
-    using Matrix = cv::Mat;
-    using Image = MatrixWrap<cv::Vec3b>;
+    using Matrix = cv::Mat; // TODO Replace with something more general
+    using Image = MatrixWrap<cv::Vec3b>; // 3-channel matrix
 
 public:
 //    BBS() : pz(pzDefault), gamma(gammaDefault) {};
