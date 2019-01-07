@@ -39,8 +39,8 @@ public:
 
     Matrix compute();
     Matrix compute(const Matrix &image, const Matrix &templateImage);
-    Matrix getImage() const;
-    Matrix getTemplate() const;
+    Matrix getImage() const noexcept;
+    Matrix getTemplate() const noexcept;
     void setImage(const Matrix &imageIn);
     void setTemplate(const Matrix &imageIn);
 

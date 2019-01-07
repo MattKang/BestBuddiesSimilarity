@@ -20,12 +20,12 @@ BBS::Matrix BBS::compute(const Matrix &image, const Matrix &templateImage)
     return compute();
 }
 
-BBS::Matrix BBS::getImage() const
+BBS::Matrix BBS::getImage() const noexcept
 {
     return image;
 }
 
-BBS::Matrix BBS::getTemplate() const
+BBS::Matrix BBS::getTemplate() const noexcept
 {
     return templateImage;
 }
