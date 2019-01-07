@@ -9,27 +9,28 @@
 
 class BBS
 {
-    using ScalarType = cv::Vec3b; // 3-channel (RGB) unsigned char
-    using MatrixBase = cv::Mat_<ScalarType>;
-
-    class Matrix : public MatrixBase
+    template<typename ScalarT>
+    class MatrixWrap : public cv::Mat_<ScalarT>
     {
+        using MatrixBase = cv::Mat_<ScalarT>;
         using MatrixBase::MatrixBase;
     public:
-        Matrix() = default;
-        Matrix(const cv::MatExpr &matrix) : MatrixBase(matrix) {};
+        MatrixWrap() = default;
+        MatrixWrap(const cv::MatExpr &matrix) : MatrixBase(matrix) {};
 
-        static Matrix block(const Matrix &image, const int x, const int y, const int width, const int height)
+        static MatrixWrap block(const MatrixWrap &image, const int x, const int y, const int width, const int height)
         {
             return image(cv::Rect(x, y, width, height));
         }
-        static Matrix zeros(const int rows, const int cols) { return MatrixBase::zeros(rows, cols); }
+        static MatrixWrap zeros(const int rows, const int cols) { return MatrixBase::zeros(rows, cols); }
     };
+    using Matrix = cv::Mat;
+    using Image = MatrixWrap<cv::Vec3b>;
 
 public:
-    BBS() : pz(pzDefault), gamma(gammaDefault) {};
-    BBS(const Matrix &imageIn,
-        const Matrix &templateImageIn,
+//    BBS() : pz(pzDefault), gamma(gammaDefault) {};
+    BBS(const Image &imageIn,
+        const Image &templateImageIn,
         const int pzIn = pzDefault,
         const float gammaIn = gammaDefault) : pz(pzIn), gamma(gammaIn)
     {
@@ -37,22 +38,22 @@ public:
         setTemplate(templateImageIn);
     }
 
-    Matrix compute();
-    Matrix compute(const Matrix &image, const Matrix &templateImage);
-    Matrix getImage() const noexcept;
-    Matrix getTemplate() const noexcept;
-    void setImage(const Matrix &imageIn);
-    void setTemplate(const Matrix &imageIn);
+    Image compute();
+    Image compute(const Image &image, const Image &templateImage);
+    Image getImage() const noexcept;
+    Image getTemplate() const noexcept;
+    void setImage(const Image &imageIn);
+    void setTemplate(const Image &imageIn);
 
 private:
-    Matrix adjustImageSize(const Matrix &image) const;
-    static Matrix im2col(Matrix &src, int rowBlock, int colBlock, int rowStride, int colStride);
+    Image adjustImageSize(const Image &image) const;
+    static Image im2col(Image &src, int rowBlock, int colBlock, int rowStride, int colStride);
 
     static constexpr int pzDefault = 3; // from literature
     static constexpr float gammaDefault = 2; // from literature
     int pz;
     float gamma;
-    Matrix image, templateImage;
+    Image image, templateImage;
 };
 
 #endif //BESTBUDDIESSIMILARITY_H

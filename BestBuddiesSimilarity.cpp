@@ -4,7 +4,7 @@
 
 #include "BestBuddiesSimilarity.h"
 
-BBS::Matrix BBS::compute()
+BBS::Image BBS::compute()
 {
     const auto imageSize = image.size();
     const auto templateSize = templateImage.size();
@@ -13,41 +13,41 @@ BBS::Matrix BBS::compute()
     return bbs;
 }
 
-BBS::Matrix BBS::compute(const Matrix &image, const Matrix &templateImage)
+BBS::Image BBS::compute(const Image &image, const Image &templateImage)
 {
     setImage(image);
     setTemplate(templateImage);
     return compute();
 }
 
-BBS::Matrix BBS::getImage() const noexcept
+BBS::Image BBS::getImage() const noexcept
 {
     return image;
 }
 
-BBS::Matrix BBS::getTemplate() const noexcept
+BBS::Image BBS::getTemplate() const noexcept
 {
     return templateImage;
 }
 
-void BBS::setImage(const Matrix &imageIn)
+void BBS::setImage(const Image &imageIn)
 {
     image = adjustImageSize(imageIn);
 }
 
-void BBS::setTemplate(const Matrix &imageIn)
+void BBS::setTemplate(const Image &imageIn)
 {
     templateImage = adjustImageSize(imageIn);
 }
 
-BBS::Matrix BBS::adjustImageSize(const Matrix &image) const
+BBS::Image BBS::adjustImageSize(const Image &image) const
 {
     if (image.rows % pz || image.cols % pz)
-        return Matrix::block(image, 0, 0, image.cols - image.cols % pz, image.rows - image.rows % pz);
+        return Image::block(image, 0, 0, image.cols - image.cols % pz, image.rows - image.rows % pz);
     return image;
 }
 
-BBS::Matrix BBS::im2col(Matrix &src, int rowBlock, int colBlock, int rowStride, int colStride)
+BBS::Image BBS::im2col(Image &src, int rowBlock, int colBlock, int rowStride, int colStride)
 {
     // SOURCE: https://sites.google.com/site/myvrdo/blog/eigenvsopencvim2col
     const auto m = src.rows;
@@ -57,7 +57,7 @@ BBS::Matrix BBS::im2col(Matrix &src, int rowBlock, int colBlock, int rowStride, 
     int dstrows = ((m - rowBlock) % rowStride != 0 ? rowB + 1 : rowB);
     int dstcols = ((n - colBlock) % colStride != 0 ? colB + 1 : colB);
 
-    Matrix dst(rowBlock * colBlock, dstrows * dstcols);
+    Image dst(rowBlock * colBlock, dstrows * dstcols);
 
     int colIndex = 0;
     int rowOffset;
