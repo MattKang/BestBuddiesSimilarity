@@ -26,8 +26,8 @@ class BBS
         {
             return MatrixBase(*this, cv::Rect(x, y, width, height));
         }
-        int cols() const { return MatrixBase::cols; };
-        int rows() const { return MatrixBase::rows; };
+        int cols() const { return MatrixBase::cols; }
+        int rows() const { return MatrixBase::rows; }
         static MatrixWrap zeros(const int rows, const int cols) { return MatrixBase::zeros(rows, cols); }
     };
     using Matrix = cv::Mat; // TODO Replace with something more general
