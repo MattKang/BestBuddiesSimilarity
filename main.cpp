@@ -75,13 +75,14 @@ int main(int argc, char **argv)
         }
 
         cv::imshow("", image);
-        cv::waitKey(0);
+        cv::waitKey();
         cv::imshow("", templateImage);
-        cv::waitKey(0);
+        cv::waitKey();
 
         auto bbs = BBS(image, templateImage);
+
         cv::imshow("", bbs.compute());
-        cv::waitKey(0);
+        cv::waitKey();
     }
 
     return 0;
