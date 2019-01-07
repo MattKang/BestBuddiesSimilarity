@@ -6,14 +6,16 @@
 
 BBS::Image BBS::compute()
 {
-    const auto imageSize = image.size();
-    const auto templateSize = templateImage.size();
     Image bbs = Image::zeros(image.rows(), image.cols());
     std::vector<Matrix> imageRGB(static_cast<unsigned long>(image.channels()));
     cv::split(image, imageRGB);
-    auto templateMat = im2col(templateImage, pz, pz, pz, pz);
+    auto templateMat = im2col(templateCrop, pz, pz, pz, pz);
     auto imageMat = im2col(image, pz, pz, pz, pz);
-    auto N = templateMat.cols();
+    const auto N = templateMat.cols();
+
+    constexpr float filterSigma = 0.6;
+    const auto filter = cv::createGaussianFilter(image.type(), cv::Size(pz, pz), filterSigma);
+    const auto kernel = cv::getGaussianKernel(pz, filterSigma);
 
     return bbs;
 }
@@ -25,24 +27,40 @@ BBS::Image BBS::compute(const Image &image, const Image &templateImage)
     return compute();
 }
 
-BBS::Image BBS::getImage() const noexcept
+BBS::Image BBS::getImage() const noexcept { return image; }
+
+BBS::Image BBS::getTemplate() const noexcept { return templateImage; }
+
+BBS::Image BBS::getTemplateCrop() const noexcept { return templateCrop; }
+
+void BBS::setImage(const Image &imageIn) { image = adjustImageSize(imageIn); }
+
+void BBS::setImageBox(const std::vector<int> &boundingBox)
 {
-    return image;
+    imageCrop =
+        adjustImageSize(image.block(boundingBox.at(0), boundingBox.at(1), boundingBox.at(2), boundingBox.at(3)));
+    imageBox = boundingBox;
 }
 
-BBS::Image BBS::getTemplate() const noexcept
+void BBS::setImageBox(const int x, const int y, const int width, const int height)
 {
-    return templateImage;
+    setImageBox({x, y, width, height});
 }
 
-void BBS::setImage(const Image &imageIn)
+void BBS::setTemplate(const Image &imageIn) { templateImage = adjustImageSize(imageIn); }
+
+void BBS::setTemplateBox(const std::vector<int> &boundingBox)
 {
-    image = adjustImageSize(imageIn);
+    templateCrop = adjustImageSize(templateImage.block(boundingBox.at(0),
+                                                       boundingBox.at(1),
+                                                       boundingBox.at(2),
+                                                       boundingBox.at(3)));
+    templateBox = boundingBox;
 }
 
-void BBS::setTemplate(const Image &imageIn)
+void BBS::setTemplateBox(const int x, const int y, const int width, const int height)
 {
-    templateImage = adjustImageSize(imageIn);
+    setTemplateBox({x, y, width, height});
 }
 
 BBS::Image BBS::adjustImageSize(const Image &image) const

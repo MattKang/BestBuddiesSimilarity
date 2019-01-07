@@ -63,17 +63,6 @@ int main(int argc, char **argv)
         const auto image = cv::imread(imagePaths.at(i));
         auto templateImage = cv::imread(templatePaths.at(i));
 
-        // Crop template image by bounding box
-        if (!boxPaths.empty())
-        {
-            const auto boundingBox = readValuesFromFile(boxPaths.at(i));
-            const auto xMin = static_cast<int>(boundingBox.front().at(0));
-            const auto yMin = static_cast<int>(boundingBox.front().at(1));
-            const auto width = static_cast<int>(boundingBox.front().at(2));
-            const auto height = static_cast<int>(boundingBox.front().at(3));
-            templateImage = templateImage(cv::Rect(xMin, yMin, width, height));
-        }
-
         cv::imshow("", image);
         cv::waitKey();
         cv::imshow("", templateImage);
@@ -81,6 +70,14 @@ int main(int argc, char **argv)
 
         auto bbs = BBS(image, templateImage);
 
+        // Crop template image by bounding box
+        if (!boxPaths.empty())
+        {
+            const auto boundingBox = readValuesFromFile<int>(boxPaths.at(i));
+            bbs.setTemplateBox(boundingBox.at(0));
+        }
+        cv::imshow("", bbs.getTemplateCrop());
+        cv::waitKey();
         cv::imshow("", bbs.compute());
         cv::waitKey();
     }
