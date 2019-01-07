@@ -31,7 +31,7 @@ int parseArgs(int &argc,
 }
 
 template<typename ScalarT = double, typename CharT = char *>
-std::vector<std::vector<ScalarT>> readDelimitedValues(const CharT &filePath, const char delimiter = ',')
+std::vector<std::vector<ScalarT>> readValuesFromFile(const CharT &filePath, const char delimiter = ',')
 {
     std::vector<std::vector<ScalarT>> values;
     std::ifstream file(filePath);
@@ -66,7 +66,7 @@ int main(int argc, char **argv)
         // Crop template image by bounding box
         if (!boxPaths.empty())
         {
-            const auto boundingBox = readDelimitedValues(boxPaths.at(i));
+            const auto boundingBox = readValuesFromFile(boxPaths.at(i));
             const auto xMin = static_cast<int>(boundingBox.front().at(0));
             const auto yMin = static_cast<int>(boundingBox.front().at(1));
             const auto width = static_cast<int>(boundingBox.front().at(2));
