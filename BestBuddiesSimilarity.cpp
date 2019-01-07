@@ -30,25 +30,26 @@ BBS::Matrix BBS::getTemplate() const noexcept
     return templateImage;
 }
 
-void BBS::setImage(const BBS::Matrix &imageIn)
+void BBS::setImage(const Matrix &imageIn)
 {
     image = adjustImageSize(imageIn);
 }
 
-void BBS::setTemplate(const BBS::Matrix &imageIn)
+void BBS::setTemplate(const Matrix &imageIn)
 {
     templateImage = adjustImageSize(imageIn);
 }
 
-BBS::Matrix BBS::adjustImageSize(const BBS::Matrix &image) const
+BBS::Matrix BBS::adjustImageSize(const Matrix &image) const
 {
     if (image.rows % pz || image.cols % pz)
         return Matrix::block(image, 0, 0, image.cols - image.cols % pz, image.rows - image.rows % pz);
     return image;
 }
 
-BBS::Matrix BBS::im2col(BBS::Matrix &src, int rowBlock, int colBlock, int rowStride, int colStride)
+BBS::Matrix BBS::im2col(Matrix &src, int rowBlock, int colBlock, int rowStride, int colStride)
 {
+    // SOURCE: https://sites.google.com/site/myvrdo/blog/eigenvsopencvim2col
     const auto m = src.rows;
     const auto n = src.cols;
     const auto rowB = static_cast<int>(floor((m - rowBlock) / rowStride) + 1);
