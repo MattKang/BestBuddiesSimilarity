@@ -13,9 +13,12 @@ BBS::Image BBS::compute()
     auto imageMat = im2col(image, pz, pz, pz, pz);
     const auto N = templateMat.cols();
 
-    constexpr float filterSigma = 0.6;
-    const auto filter = cv::createGaussianFilter(image.type(), cv::Size(pz, pz), filterSigma);
+    constexpr float filterSigma = 20;
+    const auto filter = cv::createGaussianFilter(image.type(), cv::Size(5*pz, 5*pz), filterSigma);
     const auto kernel = cv::getGaussianKernel(pz, filterSigma);
+    cv::filter2D(image, image, -1, kernel);
+    cv::imshow("", image);
+    cv::waitKey();
 
     return bbs;
 }

@@ -46,7 +46,7 @@ public:
         : pz(pzIn),
           gamma(gammaIn),
           imageBox{0, 0, imageIn.width(), imageIn.height()},
-          templateBox{0, 0, templateImageIn.width(), templateImageIn.height()},
+          templateBox{0, 0, templateImageIn.width(), templateImageIn.height()}, // TODO: valid after adjustImageSize()?
           templateCrop(templateImageIn)
     {
         setImage(imageIn);
